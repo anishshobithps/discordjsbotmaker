@@ -1,14 +1,36 @@
 # Discord bot Maker
 
-A discord bot maker for lazy developers with inbuilt commandhandler and eventhandler :D
+Hello myself Anish Shobith and i am the developer of this npm package Discord Bot Maker
+
+## About:
+>A Tool which creates a discord bot with a CLI !!
+
+[![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
+
+## Installation:
+So we need to install it globally so we can use it whenever we want and thats what we want!!
 
 Installing the Package:
-``` npm i -g discordjsbotmaker```
-That would install globally
+<code>npm i -g discordjsbotmaker</code>
+And your done !!
 
-then in your project folder just do
+Now working with your project:
+1) Go in a directory or folder of your choice 
+2) Open command prompt in that folder 
+3) In the command line type `discordbotmaker`
 
-```discordbotmaker``` 
-and choose the first one and then it will make the bot in a folder for you and your done !!
+And it will ask all the required things!!
+Sit back and relax!!
 
-enjoy!! :D
+And your project will be Generated with your folder name!!
+
+## Features:
+A Built In Command And Event Handler!! which is good for a high development bot !!
+
+## TODO:
+* [x] Command Handler
+* [x] Event Handler
+* [ ] Database
+* [ ] Making cli accept the token and other stuff
+* [ ] More Commands
+
