@@ -1,3 +1,8 @@
+/**
+ * Author: Anish Shobith
+ * Handler: Event Handler
+ */
+
 const { readdirSync } = require("fs");
 
 module.exports = (bot) => {

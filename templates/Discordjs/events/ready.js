@@ -1,5 +1,9 @@
-const fs = require("fs");
-const chalk = require("chalk");
+/**
+ * Author: Anish Shobith
+ * Event : ready
+ */
+
+ const chalk = require("chalk");
 
 const config = require("../config");
 

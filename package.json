@@ -1,6 +1,6 @@
 {
   "name": "discordjsbotmaker",
-  "version": "1.0.1",
+  "version": "0.0.3",
   "description": "A simple discord bot template maker",
   "main": "cli.js",
   "author": "Anish Shobith",
@@ -9,7 +9,10 @@
   "dependencies": {
     "chalk": "^2.4.2",
     "figlet": "^1.2.1",
-    "inquirer": "^6.2.1"
+    "inquirer": "^6.2.1",
+    "log-symbols": "^2.2.0",
+    "path": "^0.12.7",
+    "yarn": "^1.13.0"
   },
   "repository": "https://github.com/Anish-Shobith/discordbotmaker",
   "bin": {
