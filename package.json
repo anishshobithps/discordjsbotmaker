@@ -3,9 +3,6 @@
   "version": "0.0.3",
   "description": "A simple discord bot template maker",
   "main": "cli.js",
-  "scripts": {
-    "test": "cli.js"
-  },
   "author": "Anish Shobith",
   "license": "MIT",
   "private": false,
@@ -25,6 +22,7 @@
     "eslint": "^5.12.0"
   },
   "scripts": {
-    "test": "./node_modules/.bin/eslint *"
+    "test": "./node_modules/.bin/eslint *",
+    "test": "./cli.js"
   }
 }
