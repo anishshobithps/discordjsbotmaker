@@ -22,7 +22,6 @@
     "eslint": "^5.12.0"
   },
   "scripts": {
-    "test": "./node_modules/.bin/eslint *",
-    "test": "./cli.js"
+    "test": "./node_modules/.bin/eslint *"
   }
 }
