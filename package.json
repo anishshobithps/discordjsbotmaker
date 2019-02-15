@@ -19,7 +19,7 @@
     "discordbotmaker": "cli.js"
   },
   "devDependencies": {
-    "eslint": "5.12.1"
+    "eslint": "5.14.0"
   },
   "scripts": {
     "test": "./node_modules/.bin/eslint *"
