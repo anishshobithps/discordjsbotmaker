@@ -75,6 +75,12 @@ prompt([{
   });
 });
 
+/**
+ *
+ * @param  {any} templatePath - Path of the templatePath
+ * @param  {any} projectPath - Path of the Project
+ * @returns {void}
+ */
 const createDirContents = (templatePath, projectPath) => {
   for (const file of readdirSync(templatePath)) {
     // eslint-disable-next-line max-len
