@@ -1,73 +1,95 @@
 #!/usr/bin/env node
-const inquirer = require("inquirer");
-const chalk = require("chalk");
-const figlet = require("figlet");
-const fs = require("fs");
-const path = require("path");
-const symbols = require("log-symbols");
-const { exec } = require("child_process");
-const builders = require('./builders')
+
+/* eslint-disable no-console */
+
+'use strict';
+
+const { prompt } = require('inquirer');
+const chalk = require('chalk');
+const { textSync } = require('figlet');
+const { readdirSync, writeFileSync, statSync, mkdirSync, readFileSync, writeFile } = require('fs');
+const { join } = require('path');
+const { info, success, error } = require('log-symbols');
+const { exec } = require('child_process');
+const { getConfig } = require('./builders');
 
 console.clear();
-console.log(chalk.green.bold(figlet.textSync("Discord Bot Maker", "standard")));
+console.log(chalk.green.bold(textSync('Discord Bot Maker', 'Standard')));
 
-inquirer.prompt([{
-    name: "project-choice",
-    type: "list",
-    message: "What project template would you like to generate?",
-    choices: fs.readdirSync(`${__dirname}/templates`).filter(e => e !== ".DS_Store")
+prompt([{
+  name: 'project-choice',
+  type: 'list',
+  message: 'What project template would you like to generate ? :',
+  choices: readdirSync(`${__dirname}/templates`).filter(e => e !== '.DS_Store'),
 }, {
-    name: "project-name",
-    type: "input",
-    message: "Project Name:",
-    validate: input => new RegExp(/^([A-Za-z\-\_\d])+$/).test(input) ? true : "Project name may only include letters, numbers, underscores and hashes."
+  name: 'project-name',
+  type: 'input',
+  message: 'What is your project name ? :',
+  // eslint-disable-next-line no-useless-escape
+  validate: input => new RegExp(/^(A-za-z\-\_\d])+$/).test(input) ? true :
+    'Project name may only include letters, numbers, underscores and hashes.',
 }, {
-    name: "token",
-    type: "password",
-    message: "Enter your bot token:"
+  name: 'bot-name',
+  type: 'input',
+  message: 'Please enter you\'r bot name :',
 }, {
-    name: "prefix",
-    type: "input",
-    message: "Enter your bot's Prefix:"
+  name: 'token',
+  type: 'password',
+  message: 'Enter you\'r bot token [Content Hidden] :',
 }, {
-    name: "status",
-    type: "input",
-    message: "Enter status of your bot[online/idle/dnd/invisible]:"
+  name: 'prefix',
+  type: 'input',
+  message: 'Please enter your\'r bot prefix :',
 }, {
-    name: "activity",
-    type: "input",
-    message: "Enter activity of your bot[Watching/Listening/Playing]:"
+  name: 'status',
+  type: 'input',
+  message: 'Enter status of you\'r bot [online/idle/dnd/invisible] :',
 }, {
-    name: "owner",
-    type: "input",
-    message: "Enter your owner id of the bot:"
-}
-]).then(answers => {
-    fs.mkdirSync(path.join(process.cwd(), answers["project-name"]));
-    console.log(`${symbols.info} Installing Project Contents`)
-    createDirContents(path.join(__dirname, "templates", answers["project-choice"]), answers["project-name"]);
-    console.log(`${symbols.success} Done installing Project Contents...`)
-    let dir = answers["project-name"];
+  name: 'activity',
+  type: 'input',
+  message: 'Enter activity of you\'r bot [Watching/Listening/Playing] :',
+}, {
+  name: 'owner',
+  type: 'input',
+  message: 'Enter your owner id of the bot :',
+},
+]).then(ans => {
+  mkdirSync(join(process.cwd(), ans['project-name'])).catch(e => console.error(e));
+  console.log(`${info} Installing project contents..`);
+  createDirContents(join(__dirname, 'templates', ans['project-choice']), ans['project-name']);
+  console.log(`${info} Done installing project contents...`);
 
-    console.log(`${symbols.info} Creating config.js`)
-    fs.writeFile(`${dir}/config.js`, builders.getconfig(answers.token, answers.activity, answers.status, answers.prefix, answers.owner), err => {
-        if (err)
-            return log(`${logSymbols.error} Error at config.js creation`)
-    })
+  const dir = ans['project-name'];
 
-    console.log(`${symbols.info} Installing Dependenices... Might take a while`)
-    exec(`cd ${dir} && yarn`, (err, stdout, stderr) => {
-        console.log(`${symbols.success} Done!!`)
-    })
+  console.log(`${info} Creating config file...`);
+
+  // eslint-disable-next-line consistent-return
+  writeFile(`${dir}/config.js`, getConfig(ans.token, ans.activity, ans.status, ans.prefix, ans.owner), err => {
+    if (err) return console.log(`${error} Error at config.js creation...`);
+  });
+
+  console.log(`${info} Installing dependenices... Might take a while...`);
+  exec(`cd ${dir} && npm install`, err => {
+    if (err) console.log(err);
+    console.log(`${success} Done!`);
+  });
 });
 
+/**
+ *
+ * @param  {any} templatePath - Path of the templatePath
+ * @param  {any} projectPath - Path of the Project
+ * @returns {void}
+ */
 const createDirContents = (templatePath, projectPath) => {
-    for (const file of fs.readdirSync(templatePath)) {
-        const filePath = path.join(templatePath, file), stats = fs.statSync(filePath), writePath = path.join(process.cwd(), projectPath, file);
-        if (stats.isFile()) fs.writeFileSync(writePath, fs.readFileSync(filePath, 'utf8'), 'utf8');
-        else if (stats.isDirectory()) {
-            fs.mkdirSync(writePath);
-            createDirContents(path.join(templatePath, file), path.join(projectPath, file));
-        }
+  for (const file of readdirSync(templatePath)) {
+    // eslint-disable-next-line max-len
+    const filePath = join(templatePath, file), stats = statSync(filePath), writePath = join(process.cwd(), projectPath, file);
+    if (stats.isFile()) {
+      writeFileSync(writePath, readFileSync(filePath, 'utf8'), 'utf8');
+    } else if (stats.isDirectory()) {
+      mkdirSync(writePath);
+      createDirContents(join(templatePath, file), join(projectPath, file));
     }
+  }
 };
